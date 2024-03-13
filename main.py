@@ -43,6 +43,8 @@ def train_model(model, train_loader, test_loader, train_loader_1, device, args):
         auc, _ = get_score(model, device, train_loader, test_loader)
         print('Epoch: {}, AUROC is: {}'.format(epoch + 1, auc))
 
+    return auc
+
 
 def run_epoch(model, train_loader, optimizer, center, device, is_angular):
     total_loss, total_num = 0.0, 0
@@ -104,18 +106,30 @@ def main(args):
     model = utils.Model(args.backbone)
     model = model.to(device)
 
-    train_loader, test_loader, train_loader_1 = utils.get_loaders(dataset=args.dataset, label_class=args.label, batch_size=args.batch_size, backbone=args.backbone)
-    train_model(model, train_loader, test_loader, train_loader_1, device, args)
+    if args.dataset == 'mvtec':
+        all_categories = sorted(os.listdir("/kaggle/input/mvtec-ad/"))
+        auc_sum = 0.0
+        for category in all_categories:
+            train_loader, test_loader, train_loader_1 = utils.get_mvtec_loaders(category=category, shrink_factor=args.shrink_factor, batch_size=args.batch_size, backbone=args.backbone)
+            auc = train_model(model, train_loader, test_loader, train_loader_1, device, args)
+            print(f"auc_{category}: {auc}")
+            auc_sum += auc
+        auc_avg = auc_sum / len(all_categories)
+        print(f"auc_avg: {auc_avg}")
+    else:
+        train_loader, test_loader, train_loader_1 = utils.get_loaders(dataset=args.dataset, label_class=args.label, batch_size=args.batch_size, backbone=args.backbone)
+        train_model(model, train_loader, test_loader, train_loader_1, device, args)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument('--dataset', default='cifar10')
+    parser.add_argument('--dataset', default='mvtec')
     parser.add_argument('--epochs', default=20, type=int, metavar='epochs', help='number of epochs')
     parser.add_argument('--label', default=0, type=int, help='The normal class')
     parser.add_argument('--lr', type=float, default=1e-5, help='The initial learning rate.')
     parser.add_argument('--batch_size', default=64, type=int)
     parser.add_argument('--backbone', default=152, type=int, help='ResNet 18/152')
     parser.add_argument('--angular', action='store_true', help='Train with angular center loss')
+    parser.add_argument('--shrink_factor', type=float, default=1.0)
     args = parser.parse_args()
     main(args)
