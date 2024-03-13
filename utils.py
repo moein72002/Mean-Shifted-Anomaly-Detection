@@ -300,7 +300,8 @@ class MVTEC(Dataset):
 
         #         print(f"imagenet30_img.size: {imagenet30_img.size}")
         #         print(f"img.size: {img.size}")
-        img = center_paste(imagenet30_img, img)
+        if not self.train:
+            img = center_paste(imagenet30_img, img)
 
         if self.transform is not None:
             img = self.transform(img)
