@@ -120,6 +120,10 @@ def main(args):
         for category in all_categories:
             print(f"category: {category}")
             train_loader, test_loader, train_loader_1 = utils.get_mvtec_loaders(category=category, shrink_factor=args.shrink_factor, batch_size=args.batch_size, backbone=args.backbone)
+
+            model = utils.Model(args.backbone)
+            model = model.to(device)
+
             auc = train_model(model, train_loader, test_loader, train_loader_1, device, args)
             print(f"auc_{category}: {auc}")
             auc_sum += auc
