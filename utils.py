@@ -408,7 +408,7 @@ def get_mvtec_loaders(category, shrink_factor, batch_size, backbone):
 
     visualize_random_samples_from_clean_dataset(trainset, "trainset")
     visualize_random_samples_from_clean_dataset(testset, "testset")
-    visualize_random_samples_from_clean_dataset(trainset_1, "trainset_1")
+    # visualize_random_samples_from_clean_dataset(trainset_1, "trainset_1")
 
     train_loader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True, num_workers=2,
                                                drop_last=False)
