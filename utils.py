@@ -269,7 +269,7 @@ class MVTEC(Dataset):
         img = Image.fromarray(img)
 
         if self.select_random_image_from_imagenet:
-            imagenet30_img = self.imagenet30_testset[int(random.random() * len(imagenet30_testset))][0].resize(img.size)
+            imagenet30_img = self.imagenet30_testset[int(random.random() * len(self.imagenet30_testset))][0].resize(img.size)
         else:
             imagenet30_img = self.imagenet30_testset[100][0].resize(img.size)
 
