@@ -13,6 +13,7 @@ BICUBIC = InterpolationMode.BICUBIC
 from PIL import ImageFilter, Image, ImageOps
 from torchvision.datasets.folder import default_loader
 import os
+import matplotlib.image as mpimg
 
 class GaussianBlur(object):
     """Gaussian blur augmentation in SimCLR https://arxiv.org/abs/2002.05709"""
