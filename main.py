@@ -112,7 +112,7 @@ def main(args):
 
     if args.dataset == 'mvtec':
         # List all files and directories in the directory
-        all_entries = sorted(os.listdir(directory_path))
+        all_entries = sorted(os.listdir("/kaggle/input/mvtec-ad/"))
         # Filter out the directories
         all_categories = [entry for entry in all_entries if os.path.isdir(os.path.join("/kaggle/input/mvtec-ad/", entry))]
         # all_categories = sorted(os.listdir("/kaggle/input/mvtec-ad/"))
