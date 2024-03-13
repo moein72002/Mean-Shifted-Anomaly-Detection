@@ -408,8 +408,8 @@ def get_mvtec_loaders(category, shrink_factor, batch_size, backbone):
     trainset_1 = MVTEC(root='/kaggle/input/mvtec-ad/', train=True, transform=Transform_MVTec(), resize=im_shape,
                      category=category, select_random_image_from_imagenet=True, shrink_factor=shrink_factor)
 
-    visualize_random_samples_from_clean_dataset(trainset, "trainset")
-    visualize_random_samples_from_clean_dataset(testset, "testset")
+    visualize_random_samples_from_clean_dataset(trainset, f"trainset_{category}")
+    visualize_random_samples_from_clean_dataset(testset, f"testset_{category}")
     # visualize_random_samples_from_clean_dataset(trainset_1, "trainset_1")
 
     train_loader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True, num_workers=2,
