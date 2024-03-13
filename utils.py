@@ -254,9 +254,9 @@ class MVTEC(Dataset):
 
             # for every subfolder in test folder
             for subfolder in subfolders:
-                label = 0
+                label = 1
                 if subfolder == 'good':
-                    label = 1
+                    label = 0
                 testSubfolder = testFolder + subfolder + '/'
                 #                 print(testSubfolder)
                 os.chdir(testSubfolder)
