@@ -133,6 +133,23 @@ def knn_score(train_set, test_set, n_neighbours=2):
     D, _ = index.search(test_set, n_neighbours)
     return np.sum(D, axis=1)
 
+def center_paste(large_img, small_img):
+    # Calculate the center position
+    large_width, large_height = large_img.size
+    small_width, small_height = small_img.size
+
+    # Calculate the top-left position
+    left = (large_width - small_width) // 2
+    top = (large_height - small_height) // 2
+
+    # Create a copy of the large image to keep the original unchanged
+    result_img = large_img.copy()
+
+    # Paste the small image onto the large one at the calculated position
+    result_img.paste(small_img, (left, top))
+
+    return result_img
+
 class IMAGENET30_TEST_DATASET(Dataset):
     def __init__(self, root_dir="/kaggle/input/imagenet30-dataset/one_class_test/one_class_test/", transform=None):
         """
