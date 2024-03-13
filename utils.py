@@ -286,7 +286,7 @@ class MVTEC(Dataset):
 
         # doing this so that it is consistent with all other datasets
         # to return a PIL Image
-        img = Image.fromarray(img)
+        img = Image.fromarray(img).convert('RGB')
         # print(f"img.size: {img.size}")
 
         if self.select_random_image_from_imagenet:
