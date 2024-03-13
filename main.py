@@ -111,7 +111,11 @@ def main(args):
     model = model.to(device)
 
     if args.dataset == 'mvtec':
-        all_categories = sorted(os.listdir("/kaggle/input/mvtec-ad/"))
+        # List all files and directories in the directory
+        all_entries = sorted(os.listdir(directory_path))
+        # Filter out the directories
+        all_categories = [entry for entry in all_entries if os.path.isdir(os.path.join("/kaggle/input/mvtec-ad/", entry))]
+        # all_categories = sorted(os.listdir("/kaggle/input/mvtec-ad/"))
         auc_sum = 0.0
         for category in all_categories:
             print(f"category: {category}")
