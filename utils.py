@@ -170,7 +170,7 @@ class IMAGENET30_TEST_DATASET(Dataset):
             image = self.transform(image)
         return image, label
 
-class MVTEC(data.Dataset):
+class MVTEC(Dataset):
     """`MVTEC <https://www.mvtec.com/company/research/datasets/mvtec-ad/>`_ Dataset.
     Args:
         root (string): Root directory of dataset where directories
