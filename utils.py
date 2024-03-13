@@ -287,7 +287,7 @@ class MVTEC(Dataset):
         # doing this so that it is consistent with all other datasets
         # to return a PIL Image
         img = Image.fromarray(img)
-        print(f"img.size: {img.size}")
+        # print(f"img.size: {img.size}")
 
         if self.select_random_image_from_imagenet:
             imagenet30_img = self.imagenet30_testset[int(random.random() * len(self.imagenet30_testset))][0].resize((224, 224))
