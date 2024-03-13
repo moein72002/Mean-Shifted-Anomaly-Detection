@@ -7,6 +7,7 @@ import torchvision.models as models
 import torch.nn.functional as F
 from PIL import ImageFilter
 import random
+from torch.utils.data import Dataset
 from torchvision.transforms import InterpolationMode
 BICUBIC = InterpolationMode.BICUBIC
 
