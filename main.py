@@ -111,6 +111,7 @@ def main(args):
         all_categories = sorted(os.listdir("/kaggle/input/mvtec-ad/"))
         auc_sum = 0.0
         for category in all_categories:
+            print(f"category: {category}")
             train_loader, test_loader, train_loader_1 = utils.get_mvtec_loaders(category=category, shrink_factor=args.shrink_factor, batch_size=args.batch_size, backbone=args.backbone)
             auc = train_model(model, train_loader, test_loader, train_loader_1, device, args)
             print(f"auc_{category}: {auc}")

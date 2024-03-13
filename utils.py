@@ -38,7 +38,7 @@ transform_color_mvtec = transforms.Compose([transforms.Resize(224),
                                       transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
 
 transform_resnet18 = transforms.Compose([
-    transforms.Resize(224, interpolation=BICUBIC),
+    transforms.Resize(224),
     transforms.CenterCrop(224),
     transforms.ToTensor(),
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
@@ -319,6 +319,54 @@ class MVTEC(Dataset):
         else:
             return len(self.test_data)
 
+def show_images(images, labels, dataset_name):
+    num_images = len(images)
+    rows = int(num_images / 5) + 1
+
+    fig, axes = plt.subplots(rows, 5, figsize=(15, rows * 3))
+
+    for i, ax in enumerate(axes.flatten()):
+        if i < num_images:
+            ax.imshow(images[i].permute(1, 2, 0))  # permute to (H, W, C) for displaying RGB images
+            ax.set_title(f"Label: {labels[i]}")
+        ax.axis("off")
+
+    plt.savefig(f'{dataset_name}_visualization.png')
+
+def visualize_random_samples_from_clean_dataset(dataset, dataset_name):
+    print(f"Start visualization of clean dataset: {dataset_name}")
+    # Choose 20 random indices from the dataset
+    if len(dataset) > 20:
+        random_indices = random.sample(range(len(dataset)), 20)
+    else:
+        random_indices = [i for i in range(len(dataset))]
+
+    # Retrieve corresponding samples
+    random_samples = [dataset[i] for i in random_indices]
+
+    # Separate images and labels
+    images, labels = zip(*random_samples)
+
+    # print(f"len(labels): {len(labels)}")
+    # print(f"type(labels): {type(labels)}")
+    # print(f"type(images): {type(images)}")
+    # print(f"type(labels[0]): {type(labels[0])}")
+    # print(f"labels[0]: {labels[0]}")
+    # print(f"labels.size(): {labels.size()}")
+
+    # Convert PIL images to PyTorch tensors
+    # transform = transforms.ToTensor()
+    # images = [transform(image) for image in images]
+
+    # Convert labels to PyTorch tensor
+    print(f"len(labels): {len(labels)}")
+    print(f"type(labels): {type(labels)}")
+    print(f"type(labels[0]): {type(labels[0])}")
+    print(f"labels[0]: {labels[0]}")
+    labels = torch.tensor(labels)
+
+    # Show the 20 random samples
+    show_images(images, labels, dataset_name)
 
 def get_loaders(dataset, label_class, batch_size, backbone):
     if dataset == "cifar10":
@@ -354,6 +402,10 @@ def get_mvtec_loaders(category, shrink_factor, batch_size, backbone):
                      category=category, select_random_image_from_imagenet=True, shrink_factor=shrink_factor)
     trainset_1 = MVTEC(root='/kaggle/input/mvtec-ad/', train=True, transform=Transform_MVTec(), resize=im_shape,
                      category=category, select_random_image_from_imagenet=True, shrink_factor=shrink_factor)
+
+    visualize_random_samples_from_clean_dataset(trainset, "trainset")
+    visualize_random_samples_from_clean_dataset(testset, "testset")
+    visualize_random_samples_from_clean_dataset(trainset_1, "trainset_1")
 
     train_loader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True, num_workers=2,
                                                drop_last=False)
