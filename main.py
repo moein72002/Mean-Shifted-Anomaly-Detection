@@ -6,6 +6,9 @@ import utils
 from tqdm import tqdm
 import torch.nn.functional as F
 import os
+import random
+from torchvision import transforms
+import matplotlib.pyplot as plt
 
 
 def contrastive_loss(out_1, out_2):
